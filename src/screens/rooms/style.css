@@ -1,0 +1,18 @@
+.ctn-search {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.ctn-box-search {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.btn-search {
+    width: 100px;
+    height: 40px;
+    margin-left: 10px;
+}

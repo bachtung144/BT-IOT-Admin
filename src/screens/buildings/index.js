@@ -48,6 +48,7 @@ export const Building = () => {
 
     return(
         <div className="container">
+            <h1>Building</h1>
             <div className="ctn-search">
                 <Form className="ctn-box-search">
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -66,7 +67,7 @@ export const Building = () => {
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
+                            <th>Name Building</th>
                             <th>Address</th>
                             <th>Location</th>
                             <th>City</th>
@@ -88,7 +89,10 @@ export const Building = () => {
                                         <Button variant="danger" onClick={() => handleDelete(item?._id)} style={{marginLeft:10}}>Delete</Button>
                                         <AiFillEye
                                             style={{marginLeft:10, height:30, width:30, color:'blue'}}
-                                            onClick={() => history.push(`buildings/${item?._id}`)}
+                                            onClick={() => history.push({
+                                                pathname: `buildings/${item?._id}`,
+                                                state: {nameBuilding: item?.name}
+                                            })}
                                         />
                                     </td>
                                 </tr>

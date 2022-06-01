@@ -69,7 +69,6 @@ export const Building = () => {
                             <th>#</th>
                             <th>Name Building</th>
                             <th>Address</th>
-                            <th>Location</th>
                             <th>City</th>
                             <th>District</th>
                         </tr>
@@ -81,7 +80,6 @@ export const Building = () => {
                                     <td>{index+1}</td>
                                     <td>{item?.name}</td>
                                     <td>{item?.address}</td>
-                                    <td>{item?.location}</td>
                                     <td>{item?.city}</td>
                                     <td>{item?.district}</td>
                                     <td>
@@ -123,15 +121,6 @@ export const Building = () => {
                                 placeholder={`Address: ${item?.address}`}
                                 value={item?.address}
                                 onChange={e => setItem({...item, address: e.target.value})}
-                            />
-                        </div>
-
-                        <div style={{marginBottom:10}}>
-                            <p>Location</p>
-                            <Form.Control
-                                placeholder={`Location: ${item?.location}`}
-                                value={item?.location}
-                                onChange={e => setItem({...item, location: e.target.value})}
                             />
                         </div>
 

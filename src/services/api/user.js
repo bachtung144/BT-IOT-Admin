@@ -16,6 +16,16 @@ class User {
         return axiosClient.post(url, payloads);
     }
 
+    deleteUser = (id) => {
+        const url = `/admin/user/${id}`
+        return axiosClient.delete(url);
+    }
+
+    login = params => {
+        const url = '/admin/login';
+        return axiosClient.post(url, params);
+    };
+
 }
 
 const userApi = new User();

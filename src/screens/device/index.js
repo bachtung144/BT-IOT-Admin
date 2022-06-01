@@ -1,29 +1,27 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory, useLocation, useParams} from "react-router-dom";
-import "./style.css"
-import apartmentApi from "../../services/api/apartment";
+import deviceApi from "../../services/api/device";
 import roomApi from "../../services/api/room";
-import {AiFillEye} from "react-icons/ai";
 
-export const Room = () => {
+export const Device = () => {
     let history = useHistory();
     const location = useLocation();
-    let { idBuilding, idApartment } = useParams();
-    const [room, setRoom] = useState();
+    let { idRoom } = useParams();
+    const [devices, setDevice] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
 
-    const getInfoRoom = async () => {
-        const response = await roomApi.getByApartment(idApartment)
-        if (response) setRoom(response?.data)
+    const getDevices = async () => {
+        const response = await deviceApi.getByRoom(idRoom)
+        if (response) setDevice(response?.data)
         else alert(response)
     }
 
     useEffect(() => {
-        getInfoRoom()
+        getDevices()
     },[])
 
     const handleOpenModalEdit = (item) => {
@@ -31,24 +29,24 @@ export const Room = () => {
         setShow(true)
     }
 
+    const handleDelete = async (id) => {
+        const response = await deviceApi.deleteDevice(id)
+        if (response) setDevice(response?.data)
+        else alert(response)
+    }
+
     const handleClose = async () => {
-        const response = await roomApi.updateRoom(item?._id, item)
+        const response = await deviceApi.updateDevice(item?._id, item)
         if (response) {
-            setRoom(response?.data)
+            setDevice(response?.data)
             setShow(false)
         }
     };
 
     const handleCloseAdd = async () => {
-        const response = await roomApi.addRoom(newItem)
-        if (response) setRoom(response?.data)
+        const response = await deviceApi.addDevice(newItem)
+        if (response) setDevice(response?.data)
         setShowAdd(false)
-    }
-
-    const handleDelete = async (id) => {
-        const response = await roomApi.deleteRoom(id)
-        if (response) setRoom(response?.data)
-        else alert(response)
     }
 
     return(
@@ -67,28 +65,25 @@ export const Room = () => {
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {
-                room ? (
+                devices ? (
                     <Table striped bordered hover style={{marginTop:30}}>
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name Room</th>
+                            <th>Tên thiết bị</th>
                         </tr>
                         </thead>
                         <tbody>
                         {
-                            room?.map((item, index) =>
+                            devices?.map((item, index) =>
                                 <tr key={item?._id}>
                                     <td>{index+1}</td>
                                     <td>{item?.name}</td>
                                     <td>
                                         <Button variant="warning" onClick={() => handleOpenModalEdit(item)}>Edit</Button>
                                         <Button variant="danger" style={{marginLeft:10}} onClick={() => handleDelete(item?._id)}>Delete</Button>
-                                        <AiFillEye
-                                            style={{marginLeft:10, height:30, width:30, color:'blue'}}
-                                            onClick={() => history.push(`/buildings/${idBuilding}/${idApartment}/${item?._id}/device`)}
-                                        />
                                     </td>
+
                                 </tr>
                             )
                         }
@@ -106,7 +101,7 @@ export const Room = () => {
                         <div style={{marginBottom:10}}>
                             <p>Name</p>
                             <Form.Control
-                                placeholder={`Address: ${item?.name}`}
+                                placeholder={`Name: ${item?.name}`}
                                 value={item?.name}
                                 onChange={e => setItem({...item, name: e.target.value})}
                             />
@@ -134,7 +129,7 @@ export const Room = () => {
                             <Form.Control
                                 placeholder={`Name`}
                                 value={newItem?.name}
-                                onChange={e => setNewItem({...newItem, name: e.target.value, id_apartment: idApartment})}
+                                onChange={e => setNewItem({...newItem, name: e.target.value, id_room: idRoom})}
                             />
                         </div>
                     </Form.Group>

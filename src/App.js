@@ -5,7 +5,7 @@ import NavigationBar from "./Navigation";
 import {Apartment} from "./screens/apartments";
 import {Room} from "./screens/rooms";
 import {User} from "./screens/users";
-import {Device} from "./screens/Device";
+import {Device} from "./screens/device";
 
 function App() {
   return (

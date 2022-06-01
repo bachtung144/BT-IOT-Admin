@@ -38,6 +38,7 @@ export const Apartment = () => {
         if (response) setApartment(response?.data)
         else alert(response)
     }
+
     const handleCloseAdd = async () => {
         const response = await apartmentApi.addApartment(newItem)
         if (response) setApartment(response?.data)

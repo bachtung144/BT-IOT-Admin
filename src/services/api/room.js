@@ -15,6 +15,11 @@ class Room {
         const url = `/admin/room`
         return axiosClient.post(url, payloads);
     }
+
+    deleteRoom = (id) => {
+        const url = `/admin/room/${id}`
+        return axiosClient.delete(url);
+    }
 }
 
 const roomApi = new Room();

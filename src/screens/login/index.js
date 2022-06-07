@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form, Button} from 'react-bootstrap'
 import { Link, useHistory } from 'react-router-dom';
-import "./style.css"
 import userApi from "../../services/api/user";
 
 export const Login = () => {

@@ -1,27 +1,27 @@
 import axiosClient from '../axios/axiosClient';
 
-class Building {
+class Chip {
     getAll = () => {
-        const url = `/admin/building`;
+        const url = `/admin/chip`;
         return axiosClient.get(url);
     };
 
     delete = (id) => {
-        const url = `/admin/building/${id}`
+        const url = `/admin/chip/${id}`
         return axiosClient.delete(url);
     }
 
     update = (id, payloads) => {
-        const url = `/admin/building/${id}`
+        const url = `/admin/chip/${id}`
         return axiosClient.put(url, payloads);
     }
 
     add = (payloads) => {
-        const url = `/admin/building`
+        const url = `/admin/chip`
         return axiosClient.post(url, payloads);
     }
 }
 
-const buildingApi = new Building();
+const chipApi = new Chip();
 
-export default buildingApi;
+export default chipApi;

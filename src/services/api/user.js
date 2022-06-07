@@ -1,22 +1,22 @@
 import axiosClient from '../axios/axiosClient';
 
 class User {
-    getByApartment = (id) => {
+    get = (id) => {
         const url = `/admin/user?id_apartment=${id}`;
         return axiosClient.get(url);
     };
 
-    updateUser = (id, payloads) => {
+    update = (id, payloads) => {
         const url = `/admin/user/${id}`
         return axiosClient.put(url, payloads);
     }
 
-    addUser = (payloads) => {
+    add = (payloads) => {
         const url = `/admin/user`
         return axiosClient.post(url, payloads);
     }
 
-    deleteUser = (id) => {
+    delete = (id) => {
         const url = `/admin/user/${id}`
         return axiosClient.delete(url);
     }

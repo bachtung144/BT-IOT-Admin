@@ -1,95 +1,83 @@
-import React, {useEffect, useRef, useState, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
-import {useHistory, useParams, useLocation} from "react-router-dom";
-import apartmentApi from "../../services/api/apartment";
+import {useHistory, useLocation, useParams} from "react-router-dom";
+import deviceApi from "../../services/api/device";
+import roomApi from "../../services/api/room";
 
-export const Apartment = () => {
+export const Device = () => {
     let history = useHistory();
     const location = useLocation();
-    let { idBuilding } = useParams();
-    const [apartment, setApartment] = useState();
+    let { idRoom } = useParams();
+    const [devices, setDevice] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
 
-    const getInfoApartment = async () => {
-        const response = await apartmentApi.get(idBuilding)
-        if (response) setApartment(response?.data)
+    const getDevices = async () => {
+        const response = await deviceApi.get(idRoom)
+        if (response) setDevice(response?.data)
         else alert(response)
     }
+
+    useEffect(() => {
+        getDevices()
+    },[])
 
     const handleOpenModalEdit = (item) => {
         setItem(item)
         setShow(true)
     }
 
+    const handleDelete = async (id) => {
+        const response = await deviceApi.delete(id)
+        if (response) setDevice(response?.data)
+        else alert(response)
+    }
+
     const handleClose = async () => {
-        const response = await apartmentApi.update(item?._id, item)
+        const response = await deviceApi.update(item?._id, item)
         if (response) {
-            setApartment(response?.data)
+            setDevice(response?.data)
             setShow(false)
         }
     };
 
-    const handleDelete = async (id) => {
-        const response = await apartmentApi.delete(id)
-        if (response) setApartment(response?.data)
-        else alert(response)
-    }
-
     const handleCloseAdd = async () => {
-        const response = await apartmentApi.add(newItem)
-        if (response) setApartment(response?.data)
+        const response = await deviceApi.add(newItem)
+        if (response) setDevice(response?.data)
         setShowAdd(false)
     }
 
-
-    useEffect(() => {
-        getInfoApartment()
-    },[])
-
     return(
         <div className="container">
-            <h1>Building: {location.state?.nameBuilding}</h1>
+            <h1>Apartment: {location.state?.nameApartment}</h1>
             <div className="ctn-search">
+                <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {
-                apartment ? (
+                devices ? (
                     <Table striped bordered hover style={{marginTop:30}}>
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name Apartment</th>
-                            <th>Manage</th>
+                            <th>Name device</th>
+                            <th>Id Chip</th>
+                            <th>Label</th>
                         </tr>
                         </thead>
                         <tbody>
                         {
-                            apartment?.map((item, index) =>
+                            devices?.map((item, index) =>
                                 <tr key={item?._id}>
                                     <td>{index+1}</td>
-                                    <td>{item?.address}</td>
-                                    <td>
-                                        <Button
-                                            variant="info"
-                                            onClick={() => history.push({
-                                                pathname: `/buildings/${idBuilding}/${item?._id}/room`,
-                                                state: {nameApartment: item?.address}})}
-                                            style={{marginRight:10}}
-                                        >
-                                            Rooms
-                                        </Button>
-                                        <Button variant="secondary"
-                                                onClick={() => history.push({
-                                                    pathname: `/buildings/${idBuilding}/${item?._id}/user`,
-                                                    state: {nameApartment: item?.address}})}
-                                        >Users</Button>
-                                    </td>
+                                    <td>{item?.name}</td>
+                                    <td>{item?.input?.esp_id}</td>
+                                    <td>{item?.input?.gpio_id}</td>
                                     <td>
                                         <Button variant="warning" onClick={() => handleOpenModalEdit(item)}>Edit</Button>
-                                        <Button variant="danger" onClick={() => handleDelete(item?._id)} style={{marginLeft:10}}>Delete</Button>
+                                        <Button variant="danger" style={{marginLeft:10}} onClick={() => handleDelete(item?._id)}>Delete</Button>
                                     </td>
 
                                 </tr>
@@ -99,6 +87,7 @@ export const Apartment = () => {
                     </Table>
                 ) : <div> Loading</div>
             }
+
             <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit</Modal.Title>
@@ -106,11 +95,11 @@ export const Apartment = () => {
                 <Modal.Body>
                     <Form.Group>
                         <div style={{marginBottom:10}}>
-                            <p>Name Apartment</p>
+                            <p>Name</p>
                             <Form.Control
-                                placeholder={`Address: ${item?.address}`}
-                                value={item?.address}
-                                onChange={e => setItem({...item, address: e.target.value})}
+                                placeholder={`Name: ${item?.name}`}
+                                value={item?.name}
+                                onChange={e => setItem({...item, name: e.target.value})}
                             />
                         </div>
                     </Form.Group>
@@ -132,11 +121,11 @@ export const Apartment = () => {
                 <Modal.Body>
                     <Form.Group>
                         <div style={{marginBottom:10}}>
-                            <p>Name Apartment</p>
+                            <p>Name</p>
                             <Form.Control
-                                placeholder={`Address`}
-                                value={newItem?.address}
-                                onChange={e => setNewItem({...newItem, address: e.target.value, id_building: idBuilding})}
+                                placeholder={`Name`}
+                                value={newItem?.name}
+                                onChange={e => setNewItem({...newItem, name: e.target.value, id_room: idRoom})}
                             />
                         </div>
                     </Form.Group>

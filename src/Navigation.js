@@ -11,8 +11,8 @@ function NavigationBar() {
                     <LinkContainer to="/buildings">
                         <Nav.Link>List Building</Nav.Link>
                     </LinkContainer>
-                    <LinkContainer to="/test">
-                        <Nav.Link>List User</Nav.Link>
+                    <LinkContainer to="/chips">
+                        <Nav.Link>List Chip</Nav.Link>
                     </LinkContainer>
                     <LinkContainer to="/">
                         <Button>Logout</Button>

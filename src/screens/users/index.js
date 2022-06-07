@@ -22,7 +22,7 @@ export const User = () => {
     ];
 
     const getInfoUser = async () => {
-        const response = await userApi.getByApartment(idApartment)
+        const response = await userApi.get(idApartment)
         if (response) setUser(response?.data)
         else alert(response)
     }
@@ -37,7 +37,7 @@ export const User = () => {
     }
 
     const handleClose = async () => {
-        const response = await userApi.updateUser(item?._id, item)
+        const response = await userApi.update(item?._id, item)
         if (response) {
             setUser(response?.data)
             setShow(false)
@@ -45,7 +45,7 @@ export const User = () => {
     };
 
     const handleCloseAdd = async () => {
-        const response = await userApi.addUser(newItem)
+        const response = await userApi.add(newItem)
         if (response) setUser(response?.data)
         setShowAdd(false)
     }
@@ -61,7 +61,7 @@ export const User = () => {
     };
 
     const handleDelete = async (id) => {
-        const response = await userApi.deleteUser(id)
+        const response = await userApi.delete(id)
         if (response) setUser(response?.data)
         else alert(response)
     }

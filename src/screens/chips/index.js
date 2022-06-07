@@ -3,87 +3,75 @@ import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory, useLocation, useParams} from "react-router-dom";
 import deviceApi from "../../services/api/device";
 import roomApi from "../../services/api/room";
+import buildingApi from "../../services/api/building";
+import chipApi from "../../services/api/chip";
+import {AiFillEye} from "react-icons/ai";
 
-export const Device = () => {
-    let history = useHistory();
-    const location = useLocation();
-    let { idRoom } = useParams();
-    const [devices, setDevice] = useState();
+export const Chip = () => {
+    const [chips, setChips] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
 
-    const getDevices = async () => {
-        const response = await deviceApi.getByRoom(idRoom)
-        if (response) setDevice(response?.data)
+    const getAll = async () => {
+        const response = await chipApi.getAll()
+        if (response) setChips(response?.data)
         else alert(response)
     }
 
     useEffect(() => {
-        getDevices()
+        getAll()
     },[])
+
+    const handleClose = async () => {
+        const response = await chipApi.update(item?._id, item)
+        if (response) setChips(response?.data)
+        setShow(false)
+    };
 
     const handleOpenModalEdit = (item) => {
         setItem(item)
         setShow(true)
     }
 
-    const handleDelete = async (id) => {
-        const response = await deviceApi.deleteDevice(id)
-        if (response) setDevice(response?.data)
-        else alert(response)
-    }
-
-    const handleClose = async () => {
-        const response = await deviceApi.updateDevice(item?._id, item)
-        if (response) {
-            setDevice(response?.data)
-            setShow(false)
-        }
-    };
-
     const handleCloseAdd = async () => {
-        const response = await deviceApi.addDevice(newItem)
-        if (response) setDevice(response?.data)
+        const response = await chipApi.add(newItem)
+        if (response) setChips(response?.data)
         setShowAdd(false)
     }
 
-    return(
-        <div className="container">
-            <h1>Apartment: {location.state?.nameApartment}</h1>
-            <div className="ctn-search">
-                <Form className="ctn-box-search">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="Search here" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="btn-search">
-                        Search
-                    </Button>
-                </Form>
+    const handleDelete = async (id) => {
+        const response = await chipApi.delete(id)
+        if (response) setChips(response?.data)
+        else alert(response)
+    }
 
+    return (
+        <div className="container">
+            <div className="ctn-search">
+                <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {
-                devices ? (
+                chips ? (
                     <Table striped bordered hover style={{marginTop:30}}>
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>Tên thiết bị</th>
+                            <th>ESP</th>
                         </tr>
                         </thead>
                         <tbody>
                         {
-                            devices?.map((item, index) =>
+                            chips?.map((item, index) =>
                                 <tr key={item?._id}>
                                     <td>{index+1}</td>
-                                    <td>{item?.name}</td>
+                                    <td>{item?.esp_id}</td>
                                     <td>
                                         <Button variant="warning" onClick={() => handleOpenModalEdit(item)}>Edit</Button>
-                                        <Button variant="danger" style={{marginLeft:10}} onClick={() => handleDelete(item?._id)}>Delete</Button>
+                                        <Button variant="danger" onClick={() => handleDelete(item?._id)} style={{marginLeft:10}}>Delete</Button>
                                     </td>
-
                                 </tr>
                             )
                         }
@@ -91,7 +79,6 @@ export const Device = () => {
                     </Table>
                 ) : <div> Loading</div>
             }
-
             <Modal show={show} onHide={() => setShow(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit</Modal.Title>
@@ -99,11 +86,11 @@ export const Device = () => {
                 <Modal.Body>
                     <Form.Group>
                         <div style={{marginBottom:10}}>
-                            <p>Name</p>
+                            <p>ESP</p>
                             <Form.Control
-                                placeholder={`Name: ${item?.name}`}
-                                value={item?.name}
-                                onChange={e => setItem({...item, name: e.target.value})}
+                                placeholder={`ESP: ${item?.esp_id}`}
+                                value={item?.esp_id}
+                                onChange={e => setItem({...item, esp_id: e.target.value})}
                             />
                         </div>
                     </Form.Group>
@@ -125,11 +112,11 @@ export const Device = () => {
                 <Modal.Body>
                     <Form.Group>
                         <div style={{marginBottom:10}}>
-                            <p>Name</p>
+                            <p>ESP</p>
                             <Form.Control
-                                placeholder={`Name`}
-                                value={newItem?.name}
-                                onChange={e => setNewItem({...newItem, name: e.target.value, id_room: idRoom})}
+                                placeholder={`ESP`}
+                                value={newItem?.esp_id}
+                                onChange={e => setNewItem({...newItem, esp_id: e.target.value})}
                             />
                         </div>
                     </Form.Group>

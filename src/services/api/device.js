@@ -1,22 +1,22 @@
 import axiosClient from '../axios/axiosClient';
 
 class Device {
-    getByRoom = (id) => {
+    get = (id) => {
         const url = `/admin/device?id_room=${id}`;
         return axiosClient.get(url);
     };
 
-    updateDevice = (id, payloads) => {
+    update = (id, payloads) => {
         const url = `/admin/device/${id}`
         return axiosClient.put(url, payloads);
     }
 
-    addDevice = (payloads) => {
+    add = (payloads) => {
         const url = `/admin/device`
         return axiosClient.post(url, payloads);
     }
 
-    deleteDevice = (id) => {
+    delete = (id) => {
         const url = `/admin/device/${id}`
         return axiosClient.delete(url);
     }

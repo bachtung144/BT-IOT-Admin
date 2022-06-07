@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState, useMemo} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory} from "react-router-dom";
-import "./style.css"
 import buildingApi from "../../services/api/building";
 import { AiFillEye } from 'react-icons/ai';
 
@@ -20,7 +19,7 @@ export const Building = () => {
     }
 
     const handleDelete = async (id) => {
-        const response = await buildingApi.deleteBuilding(id)
+        const response = await buildingApi.delete(id)
         if (response) setBuildings(response?.data)
         else alert(response)
     }
@@ -30,7 +29,7 @@ export const Building = () => {
     },[])
 
     const handleClose = async () => {
-        const response = await buildingApi.updateBuilding(item?._id, item)
+        const response = await buildingApi.update(item?._id, item)
         if (response) setBuildings(response?.data)
         setShow(false)
     };
@@ -41,7 +40,7 @@ export const Building = () => {
     }
 
     const handleCloseAdd = async () => {
-        const response = await buildingApi.addBuilding(newItem)
+        const response = await buildingApi.add(newItem)
         if (response) setBuildings(response?.data)
         setShowAdd(false)
     }
@@ -50,15 +49,7 @@ export const Building = () => {
         <div className="container">
             <h1>Building</h1>
             <div className="ctn-search">
-                <Form className="ctn-box-search">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="Search here" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="btn-search">
-                        Search
-                    </Button>
-                </Form>
-
+                <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {

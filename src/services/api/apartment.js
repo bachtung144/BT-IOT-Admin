@@ -1,22 +1,22 @@
 import axiosClient from '../axios/axiosClient';
 
 class Apartment {
-    getByBuilding = (id) => {
+    get = (id) => {
         const url = `/admin/apartment?id_building=${id}`;
         return axiosClient.get(url);
     };
 
-    updateApartment = (id, payloads) => {
+    update = (id, payloads) => {
         const url = `/admin/apartment/${id}`
         return axiosClient.put(url, payloads);
     }
 
-    deleteApartment = (id) => {
+    delete = (id) => {
         const url = `/admin/apartment/${id}`
         return axiosClient.delete(url);
     }
 
-    addApartment = (payloads) => {
+    add = (payloads) => {
         const url = `/admin/apartment`
         return axiosClient.post(url, payloads);
     }

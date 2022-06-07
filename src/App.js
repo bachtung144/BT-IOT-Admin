@@ -5,7 +5,8 @@ import NavigationBar from "./Navigation";
 import {Apartment} from "./screens/apartments";
 import {Room} from "./screens/rooms";
 import {User} from "./screens/users";
-import {Device} from "./screens/device";
+import {Device} from "./screens/devices";
+import {Chip} from "./screens/chips";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
                   <div>
                       <NavigationBar/>
                       <Route exact path="/buildings" component={Building}/>
+                      <Route exact path="/chips" component={Chip}/>
                       <Route path="/buildings/:idBuilding" component={Apartment} exact/>
                       <Route path="/buildings/:idBuilding/:idApartment/room" component={Room} exact/>
                       <Route path="/buildings/:idBuilding/:idApartment/user" component={User} exact/>

@@ -1,8 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory, useLocation, useParams} from "react-router-dom";
-import "./style.css"
-import apartmentApi from "../../services/api/apartment";
 import roomApi from "../../services/api/room";
 import {AiFillEye} from "react-icons/ai";
 
@@ -17,7 +15,7 @@ export const Room = () => {
     const [newItem, setNewItem] = useState();
 
     const getInfoRoom = async () => {
-        const response = await roomApi.getByApartment(idApartment)
+        const response = await roomApi.get(idApartment)
         if (response) setRoom(response?.data)
         else alert(response)
     }
@@ -32,7 +30,7 @@ export const Room = () => {
     }
 
     const handleClose = async () => {
-        const response = await roomApi.updateRoom(item?._id, item)
+        const response = await roomApi.update(item?._id, item)
         if (response) {
             setRoom(response?.data)
             setShow(false)
@@ -40,13 +38,13 @@ export const Room = () => {
     };
 
     const handleCloseAdd = async () => {
-        const response = await roomApi.addRoom(newItem)
+        const response = await roomApi.add(newItem)
         if (response) setRoom(response?.data)
         setShowAdd(false)
     }
 
     const handleDelete = async (id) => {
-        const response = await roomApi.deleteRoom(id)
+        const response = await roomApi.delete(id)
         if (response) setRoom(response?.data)
         else alert(response)
     }
@@ -55,15 +53,7 @@ export const Room = () => {
         <div className="container">
             <h1>Apartment: {location.state?.nameApartment}</h1>
             <div className="ctn-search">
-                <Form className="ctn-box-search">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="Search here" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="btn-search">
-                        Search
-                    </Button>
-                </Form>
-
+                <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {

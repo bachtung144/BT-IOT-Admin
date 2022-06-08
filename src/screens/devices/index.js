@@ -1,18 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import {Form, Button, Table, Modal} from 'react-bootstrap'
+import {Form, Button, Table, Modal, Dropdown, DropdownButton} from 'react-bootstrap'
 import {useHistory, useLocation, useParams} from "react-router-dom";
 import deviceApi from "../../services/api/device";
 import roomApi from "../../services/api/room";
+import chipApi from "../../services/api/chip";
 
 export const Device = () => {
     let history = useHistory();
     const location = useLocation();
     let { idRoom } = useParams();
     const [devices, setDevice] = useState();
+    const [chips, setChips] = useState([]);
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
+    const [selectedType, setSelectedType] = useState();
+    const [selectedLabel, setSelectedlLabe] = useState();
+    const [listGpio, setListGpio] = useState([]);
 
     const getDevices = async () => {
         const response = await deviceApi.get(idRoom)
@@ -20,8 +25,15 @@ export const Device = () => {
         else alert(response)
     }
 
+    const getChips = async () => {
+        const response = await chipApi.getAll()
+        if (response) setChips(response?.data)
+        else alert(response)
+    }
+
     useEffect(() => {
         getDevices()
+        getChips()
     },[])
 
     const handleOpenModalEdit = (item) => {
@@ -31,7 +43,10 @@ export const Device = () => {
 
     const handleDelete = async (id) => {
         const response = await deviceApi.delete(id)
-        if (response) setDevice(response?.data)
+        if (response) {
+            setDevice(response?.data)
+            window.location.reload();
+        }
         else alert(response)
     }
 
@@ -40,14 +55,48 @@ export const Device = () => {
         if (response) {
             setDevice(response?.data)
             setShow(false)
+            window.location.reload();
         }
     };
 
     const handleCloseAdd = async () => {
         const response = await deviceApi.add(newItem)
-        if (response) setDevice(response?.data)
+        if (response) {
+            setDevice(response?.data)
+            window.location.reload();
+        }
         setShowAdd(false)
     }
+
+    const handleSelectChip = (key) => {
+        let tmp = chips.find(item => item.esp_id === key).list_gpio
+        let arrTmp = tmp?.filter(item => !item?.used)
+
+        setListGpio(arrTmp)
+        setSelectedType({ key});
+        setNewItem({...newItem, input: {esp_id: key, gpio_id: selectedLabel?.key}})
+    };
+
+    const handleSelectChipEdit = (key) => {
+        let tmp = chips.find(item => item.esp_id === key).list_gpio
+        let arrTmp = tmp?.filter(item => !item?.used)
+
+        setListGpio(arrTmp)
+        setSelectedType({ key});
+        setItem({...item, input: {esp_id: key, gpio_id: selectedLabel?.key}})
+    };
+
+    const handleSelectLabel = (key) => {
+        let tmp = item?.input
+        setSelectedlLabe({ key});
+        setNewItem({...newItem, input: {...tmp, gpio_id: key, esp_id: selectedType?.key}})
+    };
+
+    const handleSelectLabelEdit = (key) => {
+        let tmp = item?.input
+        setSelectedlLabe({ key});
+        setItem({...item, input: {...tmp, gpio_id: key, esp_id: selectedType?.key}})
+    };
 
     return(
         <div className="container">
@@ -102,6 +151,38 @@ export const Device = () => {
                                 onChange={e => setItem({...item, name: e.target.value})}
                             />
                         </div>
+                        <p>ESP</p>
+                        <DropdownButton
+                            alignRight
+                            title={selectedType?.key || chips[0]?.esp_id}
+                            onSelect={handleSelectChipEdit}
+                        >
+                            {chips?.map((item, index) => {
+                                return (
+
+                                    <Dropdown.Item key={index} eventKey={item.esp_id}>
+                                        {item.esp_id}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                        {
+                            selectedType ?
+                                <DropdownButton
+                                    alignRight
+                                    title={selectedLabel?.key || chips[0]?.list_gpio[0]?.id}
+                                    onSelect={handleSelectLabelEdit}
+                                >
+                                    {listGpio.map((item, index) => {
+                                        return (
+                                            <Dropdown.Item key={index} eventKey={item.id}>
+                                                {item.id}
+                                            </Dropdown.Item>
+                                        );
+                                    })}
+                                </DropdownButton>
+                                : null
+                        }
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
@@ -128,6 +209,39 @@ export const Device = () => {
                                 onChange={e => setNewItem({...newItem, name: e.target.value, id_room: idRoom})}
                             />
                         </div>
+                        <p>ESP</p>
+                        <DropdownButton
+                            alignRight
+                            title={selectedType?.key || chips[0]?.esp_id}
+                            onSelect={handleSelectChip}
+                        >
+                            {chips?.map((item, index) => {
+                                return (
+
+                                    <Dropdown.Item key={index} eventKey={item.esp_id}>
+                                        {item.esp_id}
+                                    </Dropdown.Item>
+                                );
+                            })}
+                        </DropdownButton>
+                        <p>GPIO</p>
+                        {
+                            selectedType ?
+                                <DropdownButton
+                                    alignRight
+                                    title={selectedLabel?.key || chips[0]?.list_gpio[0]?.id}
+                                    onSelect={handleSelectLabel}
+                                >
+                                    {listGpio.map((item, index) => {
+                                        return (
+                                            <Dropdown.Item key={index} eventKey={item.id}>
+                                                {item.id}
+                                            </Dropdown.Item>
+                                        );
+                                    })}
+                                </DropdownButton>
+                                : null
+                        }
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>

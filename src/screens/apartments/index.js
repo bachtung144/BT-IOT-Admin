@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState, useMemo} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory, useParams, useLocation} from "react-router-dom";
 import apartmentApi from "../../services/api/apartment";

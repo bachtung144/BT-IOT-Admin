@@ -1,28 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Form, Button, Table, Modal, Dropdown, DropdownButton} from 'react-bootstrap'
-import {useHistory, useLocation, useParams} from "react-router-dom";
-import roomApi from "../../services/api/room";
+import React, {useEffect, useState} from 'react';
+import {Form, Button, Table, Modal} from 'react-bootstrap'
+import {useLocation, useParams} from "react-router-dom";
 import userApi from "../../services/api/user";
-import data from "bootstrap/js/src/dom/data";
-import apartmentApi from "../../services/api/apartment";
 
 export const User = () => {
-    let history = useHistory();
     const location = useLocation();
-    let { idBuilding, idApartment } = useParams();
+    let { apartmentId } = useParams();
     const [user, setUser] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
-    const [selectedType, setSelectedType] = useState();
-    const list = [
-        { key: "root"},
-        { key: "child" }
-    ];
 
     const getInfoUser = async () => {
-        const response = await userApi.get(idApartment)
+        const response = await userApi.get(apartmentId)
         if (response) setUser(response?.data)
         else alert(response)
     }
@@ -50,16 +41,6 @@ export const User = () => {
         setShowAdd(false)
     }
 
-    const handleSelectType = (key) => {
-        setSelectedType({ key});
-        setNewItem({...newItem, type: key, id_apartment: idApartment})
-    };
-
-    const handleSelectTypeEdit = (key) => {
-        setSelectedType({ key});
-        setItem({...item, type: key})
-    };
-
     const handleDelete = async (id) => {
         const response = await userApi.delete(id)
         if (response) setUser(response?.data)
@@ -70,15 +51,6 @@ export const User = () => {
         <div className="container">
             <h1>Apartment: {location.state?.nameApartment}</h1>
             <div className="ctn-search">
-                <Form className="ctn-box-search">
-                    <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="email" placeholder="Search here" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit" className="btn-search">
-                        Search
-                    </Button>
-                </Form>
-
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>
             {
@@ -88,7 +60,6 @@ export const User = () => {
                         <tr>
                             <th>#</th>
                             <th>Phone</th>
-                            <th>Type</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -125,19 +96,6 @@ export const User = () => {
                                 onChange={e => setItem({...item, phone: e.target.value})}
                             />
                         </div>
-                        <DropdownButton
-                            alignRight
-                            title={item?.type}
-                            onSelect={handleSelectTypeEdit}
-                        >
-                            {list.map((item, index) => {
-                                return (
-                                    <Dropdown.Item key={index} eventKey={item.key}>
-                                        {item.key}
-                                    </Dropdown.Item>
-                                );
-                            })}
-                        </DropdownButton>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
@@ -161,23 +119,9 @@ export const User = () => {
                             <Form.Control
                                 placeholder={`Phone`}
                                 value={newItem?.phone}
-                                onChange={e => setNewItem({...newItem, phone: e.target.value, id_apartment: idApartment})}
+                                onChange={e => setNewItem({...newItem, phone: e.target.value, apartment_id: apartmentId})}
                             />
                         </div>
-
-                        <DropdownButton
-                            alignRight
-                            title={selectedType?.key || list[0].key}
-                            onSelect={handleSelectType}
-                        >
-                            {list.map((item, index) => {
-                                return (
-                                    <Dropdown.Item key={index} eventKey={item.key}>
-                                        {item.key}
-                                    </Dropdown.Item>
-                                );
-                            })}
-                        </DropdownButton>
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>

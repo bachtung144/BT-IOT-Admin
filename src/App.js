@@ -19,9 +19,9 @@ function App() {
                       <Route exact path="/buildings" component={Building}/>
                       <Route exact path="/chips" component={Chip}/>
                       <Route path="/buildings/:idBuilding" component={Apartment} exact/>
-                      <Route path="/buildings/:idBuilding/:idApartment/room" component={Room} exact/>
-                      <Route path="/buildings/:idBuilding/:idApartment/user" component={User} exact/>
-                      <Route path="/buildings/:idBuilding/:idApartment/:idRoom/device" component={Device} exact/>
+                      <Route path="/buildings/:idBuilding/:apartmentId/room" component={Room} exact/>
+                      <Route path="/buildings/:idBuilding/:apartmentId/user" component={User} exact/>
+                      <Route path="/buildings/:idBuilding/:apartmentId/:roomId/device" component={Device} exact/>
                   </div>
               </Switch>
           </BrowserRouter>

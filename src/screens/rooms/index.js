@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
 import {useHistory, useLocation, useParams} from "react-router-dom";
 import roomApi from "../../services/api/room";
@@ -7,7 +7,7 @@ import {AiFillEye} from "react-icons/ai";
 export const Room = () => {
     let history = useHistory();
     const location = useLocation();
-    let { idBuilding, idApartment } = useParams();
+    let { idBuilding, apartmentId } = useParams();
     const [room, setRoom] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
@@ -15,7 +15,7 @@ export const Room = () => {
     const [newItem, setNewItem] = useState();
 
     const getInfoRoom = async () => {
-        const response = await roomApi.get(idApartment)
+        const response = await roomApi.get(apartmentId)
         if (response) setRoom(response?.data)
         else alert(response)
     }
@@ -76,7 +76,10 @@ export const Room = () => {
                                         <Button variant="danger" style={{marginLeft:10}} onClick={() => handleDelete(item?._id)}>Delete</Button>
                                         <AiFillEye
                                             style={{marginLeft:10, height:30, width:30, color:'blue'}}
-                                            onClick={() => history.push(`/buildings/${idBuilding}/${idApartment}/${item?._id}/device`)}
+                                            onClick={() => history.push({
+                                                pathname: `/buildings/${idBuilding}/${apartmentId}/${item?._id}/device`,
+                                                state: {roomName: item?.name}
+                                            })}
                                         />
                                     </td>
                                 </tr>
@@ -124,7 +127,7 @@ export const Room = () => {
                             <Form.Control
                                 placeholder={`Name`}
                                 value={newItem?.name}
-                                onChange={e => setNewItem({...newItem, name: e.target.value, id_apartment: idApartment})}
+                                onChange={e => setNewItem({...newItem, name: e.target.value, apartment_id: apartmentId})}
                             />
                         </div>
                     </Form.Group>

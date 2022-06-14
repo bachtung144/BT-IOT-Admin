@@ -2,7 +2,7 @@ import axiosClient from '../axios/axiosClient';
 
 class Room {
     get = (id) => {
-        const url = `/admin/room?id_apartment=${id}`;
+        const url = `/admin/room?apartment_id=${id}`;
         return axiosClient.get(url);
     };
 

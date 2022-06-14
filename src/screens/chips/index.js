@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Form, Button, Table, Modal} from 'react-bootstrap'
-import {useHistory, useLocation, useParams} from "react-router-dom";
-import deviceApi from "../../services/api/device";
-import roomApi from "../../services/api/room";
-import buildingApi from "../../services/api/building";
 import chipApi from "../../services/api/chip";
-import {AiFillEye} from "react-icons/ai";
 
 export const Chip = () => {
     const [chips, setChips] = useState();

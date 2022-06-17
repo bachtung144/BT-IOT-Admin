@@ -7,7 +7,7 @@ import {AiFillEye} from "react-icons/ai";
 export const Room = () => {
     let history = useHistory();
     const location = useLocation();
-    let { idBuilding, apartmentId } = useParams();
+    let { buildingId, apartmentId } = useParams();
     const [room, setRoom] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
@@ -77,7 +77,7 @@ export const Room = () => {
                                         <AiFillEye
                                             style={{marginLeft:10, height:30, width:30, color:'blue'}}
                                             onClick={() => history.push({
-                                                pathname: `/buildings/${idBuilding}/${apartmentId}/${item?._id}/device`,
+                                                pathname: `/buildings/${buildingId}/${apartmentId}/${item?._id}/device`,
                                                 state: {roomName: item?.name}
                                             })}
                                         />

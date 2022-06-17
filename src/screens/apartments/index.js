@@ -6,7 +6,7 @@ import apartmentApi from "../../services/api/apartment";
 export const Apartment = () => {
     let history = useHistory();
     const location = useLocation();
-    let { idBuilding } = useParams();
+    let { buildingId } = useParams();
     const [apartment, setApartment] = useState();
     const [show, setShow] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
@@ -14,7 +14,7 @@ export const Apartment = () => {
     const [newItem, setNewItem] = useState();
 
     const getInfoApartment = async () => {
-        const response = await apartmentApi.get(idBuilding)
+        const response = await apartmentApi.get(buildingId)
         if (response) setApartment(response?.data)
         else alert(response)
     }
@@ -75,7 +75,7 @@ export const Apartment = () => {
                                         <Button
                                             variant="info"
                                             onClick={() => history.push({
-                                                pathname: `/buildings/${idBuilding}/${item?._id}/room`,
+                                                pathname: `/buildings/${buildingId}/${item?._id}/room`,
                                                 state: {nameApartment: item?.address}})}
                                             style={{marginRight:10}}
                                         >
@@ -83,7 +83,7 @@ export const Apartment = () => {
                                         </Button>
                                         <Button variant="secondary"
                                                 onClick={() => history.push({
-                                                    pathname: `/buildings/${idBuilding}/${item?._id}/user`,
+                                                    pathname: `/buildings/${buildingId}/${item?._id}/user`,
                                                     state: {nameApartment: item?.address}})}
                                         >Users</Button>
                                     </td>
@@ -136,7 +136,7 @@ export const Apartment = () => {
                             <Form.Control
                                 placeholder={`Address`}
                                 value={newItem?.address}
-                                onChange={e => setNewItem({...newItem, address: e.target.value, id_building: idBuilding})}
+                                onChange={e => setNewItem({...newItem, address: e.target.value, building_id: buildingId})}
                             />
                         </div>
                     </Form.Group>

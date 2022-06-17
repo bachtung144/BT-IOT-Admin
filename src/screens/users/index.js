@@ -11,6 +11,8 @@ export const User = () => {
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
+    const [validated, setValidated] = useState();
+    const [validatedEdit, setValidatedEdit] = useState();
 
     const getInfoUser = async () => {
         const response = await userApi.get(apartmentId)
@@ -27,18 +29,26 @@ export const User = () => {
         setShow(true)
     }
 
-    const handleClose = async () => {
-        const response = await userApi.update(item?._id, item)
-        if (response) {
-            setUser(response?.data)
-            setShow(false)
+    const handleCloseEdit = async () => {
+        if (!item?.phone || !item ) setValidatedEdit(true)
+        else {
+            const response = await userApi.update(item?._id, item)
+            if (response) {
+                setUser(response?.data)
+                setShow(false)
+                setValidatedEdit(false)
+            }
         }
     };
 
     const handleCloseAdd = async () => {
-        const response = await userApi.add(newItem)
-        if (response) setUser(response?.data)
-        setShowAdd(false)
+        if (!newItem?.phone || !newItem) setValidated(true)
+        else {
+            const response = await userApi.add(newItem)
+            if (response) setUser(response?.data)
+            setShowAdd(false)
+            setValidated(false)
+        }
     }
 
     const handleDelete = async (id) => {
@@ -68,7 +78,6 @@ export const User = () => {
                                 <tr key={item?._id}>
                                     <td>{index+1}</td>
                                     <td>{item?.phone}</td>
-                                    <td>{item?.type}</td>
                                     <td>
                                         <Button variant="warning" onClick={() => handleOpenModalEdit(item)}>Edit</Button>
                                         <Button variant="danger" onClick={() => handleDelete(item?._id)} style={{marginLeft:10}}>Delete</Button>
@@ -91,18 +100,21 @@ export const User = () => {
                         <div style={{marginBottom:10}}>
                             <p>Phone</p>
                             <Form.Control
-                                placeholder={`Address: ${item?.phone}`}
+                                placeholder={`Phone`}
                                 value={item?.phone}
                                 onChange={e => setItem({...item, phone: e.target.value})}
                             />
                         </div>
                     </Form.Group>
+                    {
+                        validatedEdit ? <p style={{color:"red"}}>Hãy nhập đủ thông tin</p> : null
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShow(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleClose()}>
+                    <Button variant="primary" onClick={() => handleCloseEdit()}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -123,6 +135,9 @@ export const User = () => {
                             />
                         </div>
                     </Form.Group>
+                    {
+                        validated ? <p style={{color:"red"}}>Hãy nhập đủ thông tin</p> : null
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowAdd(false)}>

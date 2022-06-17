@@ -12,6 +12,8 @@ export const Apartment = () => {
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
+    const [validated, setValidated] = useState();
+    const [validatedEdit, setValidatedEdit] = useState();
 
     const getInfoApartment = async () => {
         const response = await apartmentApi.get(buildingId)
@@ -24,11 +26,15 @@ export const Apartment = () => {
         setShow(true)
     }
 
-    const handleClose = async () => {
-        const response = await apartmentApi.update(item?._id, item)
-        if (response) {
-            setApartment(response?.data)
-            setShow(false)
+    const handleCloseEdit = async () => {
+        if (!item?.address || !item ) setValidatedEdit(true)
+        else {
+            const response = await apartmentApi.update(item?._id, item)
+            if (response) {
+                setApartment(response?.data)
+                setShow(false)
+                setValidatedEdit(false)
+            }
         }
     };
 
@@ -39,9 +45,13 @@ export const Apartment = () => {
     }
 
     const handleCloseAdd = async () => {
-        const response = await apartmentApi.add(newItem)
-        if (response) setApartment(response?.data)
-        setShowAdd(false)
+        if (!newItem?.address || !newItem) setValidated(true)
+        else {
+            const response = await apartmentApi.add(newItem)
+            if (response) setApartment(response?.data)
+            setShowAdd(false)
+            setValidated(false)
+        }
     }
 
 
@@ -114,12 +124,15 @@ export const Apartment = () => {
                             />
                         </div>
                     </Form.Group>
+                    {
+                        validatedEdit ? <p style={{color:"red"}}>Hãy nhập đủ thông tin</p> : null
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShow(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleClose()}>
+                    <Button variant="primary" onClick={() => handleCloseEdit()}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -140,6 +153,9 @@ export const Apartment = () => {
                             />
                         </div>
                     </Form.Group>
+                    {
+                        validated ? <p style={{color:"red"}}>Hãy nhập đủ thông tin</p> : null
+                    }
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowAdd(false)}>

@@ -47,7 +47,7 @@ export const Building = () => {
 
     return(
         <div className="container">
-            <h1>Building</h1>
+            <h1>Buildings</h1>
             <div className="ctn-search">
                 <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
@@ -180,7 +180,7 @@ export const Building = () => {
                         <div style={{marginBottom:10}}>
                             <p>City</p>
                             <Form.Control
-                                placeholder={`City: ${item?.city}`}
+                                placeholder={`City`}
                                 value={newItem?.city}
                                 onChange={e => setNewItem({...newItem, city: e.target.value})}
                             />

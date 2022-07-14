@@ -7,6 +7,7 @@ import {Room} from "./screens/rooms";
 import {User} from "./screens/users";
 import {Device} from "./screens/devices";
 import {Chip} from "./screens/chips";
+import {ChangePass} from "./screens/changePass";
 
 function App() {
   return (
@@ -18,10 +19,11 @@ function App() {
                       <NavigationBar/>
                       <Route exact path="/buildings" component={Building}/>
                       <Route exact path="/chips" component={Chip}/>
-                      <Route path="/buildings/:buildingId" component={Apartment} exact/>
-                      <Route path="/buildings/:buildingId/:apartmentId/room" component={Room} exact/>
-                      <Route path="/buildings/:buildingId/:apartmentId/user" component={User} exact/>
-                      <Route path="/buildings/:buildingId/:apartmentId/:roomId/device" component={Device} exact/>
+                      <Route exact path="/change-password" component={ChangePass} />
+                      <Route exact path="/buildings/:buildingId" component={Apartment} />
+                      <Route exact path="/buildings/:buildingId/:apartmentId/room" component={Room} />
+                      <Route exact path="/buildings/:buildingId/:apartmentId/user" component={User} />
+                      <Route exact path="/buildings/:buildingId/:apartmentId/:roomId/device" component={Device} />
                   </div>
               </Switch>
           </BrowserRouter>

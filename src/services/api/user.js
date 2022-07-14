@@ -26,6 +26,11 @@ class User {
         return axiosClient.post(url, params);
     };
 
+    changePass = params => {
+        const url = '/admin/change-password';
+        return axiosClient.put(url, params);
+    };
+
 }
 
 const userApi = new User();

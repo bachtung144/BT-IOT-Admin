@@ -44,7 +44,7 @@ export const Chip = () => {
 
     return (
         <div className="container">
-            <div className="ctn-search">
+            <div className="ctn-search" style={{marginTop:20}}>
                 <Form className="ctn-box-search"/>
                 <Button variant="success" onClick={() => setShowAdd(true)}>Add</Button>
             </div>

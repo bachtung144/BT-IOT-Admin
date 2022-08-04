@@ -7,12 +7,12 @@ import { AiFillEye } from 'react-icons/ai';
 export const Building = () => {
     let history = useHistory();
     const [buildings, setBuildings] = useState();
-    const [show, setShow] = useState(false);
+    const [showEdit, setShowEdit] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [item, setItem] = useState();
     const [newItem, setNewItem] = useState();
 
-    const getInfoApartment = async () => {
+    const getList = async () => {
         const response = await buildingApi.getAll()
         if (response) setBuildings(response?.data)
         else alert(response)
@@ -25,18 +25,18 @@ export const Building = () => {
     }
 
     useEffect(() => {
-        getInfoApartment()
+        getList()
     },[])
 
-    const handleClose = async () => {
+    const handleCloseEdit = async () => {
         const response = await buildingApi.update(item?._id, item)
         if (response) setBuildings(response?.data)
-        setShow(false)
+        setShowEdit(false)
     };
 
-    const handleOpenModalEdit = (item) => {
+    const handleOpenEdit = (item) => {
         setItem(item)
-        setShow(true)
+        setShowEdit(true)
     }
 
     const handleCloseAdd = async () => {
@@ -74,7 +74,7 @@ export const Building = () => {
                                     <td>{item?.city}</td>
                                     <td>{item?.district}</td>
                                     <td>
-                                        <Button variant="warning" onClick={() => handleOpenModalEdit(item)}>Edit</Button>
+                                        <Button variant="warning" onClick={() => handleOpenEdit(item)}>Edit</Button>
                                         <Button variant="danger" onClick={() => handleDelete(item?._id)} style={{marginLeft:10}}>Delete</Button>
                                         <AiFillEye
                                             style={{marginLeft:10, height:30, width:30, color:'blue'}}
@@ -91,7 +91,7 @@ export const Building = () => {
                     </Table>
                 ) : <div> Loading</div>
             }
-            <Modal show={show} onHide={() => setShow(false)}>
+            <Modal show={showEdit} onHide={() => setShowEdit(false)}>
                 <Modal.Header closeButton>
                     <Modal.Title>Edit</Modal.Title>
                 </Modal.Header>
@@ -135,10 +135,10 @@ export const Building = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShow(false)}>
+                    <Button variant="danger" onClick={() => setShowEdit(false)}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={() => handleClose()}>
+                    <Button variant="primary" onClick={() => handleCloseEdit()}>
                         Save Changes
                     </Button>
                 </Modal.Footer>
@@ -188,7 +188,7 @@ export const Building = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                    <Button variant="danger" onClick={() => setShowAdd(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => handleCloseAdd()}>

@@ -91,7 +91,7 @@ export const Chip = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShow(false)}>
+                    <Button variant="danger" onClick={() => setShow(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => handleClose()}>
@@ -117,7 +117,7 @@ export const Chip = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                    <Button variant="danger" onClick={() => setShowAdd(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => handleCloseAdd()}>

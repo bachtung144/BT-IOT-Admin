@@ -151,6 +151,7 @@ export const Device = () => {
                         </div>
                         <p>ESP</p>
                         <DropdownButton
+                            variant={'secondary'}
                             alignRight
                             title={selectedType?.key || chips[0]?.esp_id}
                             onSelect={handleSelectChipEdit}
@@ -169,6 +170,7 @@ export const Device = () => {
                                 <div style={{marginTop:15}}>
                                     <p>GPIO</p>
                                     <DropdownButton
+                                        variant={'secondary'}
                                         alignRight
                                         title={selectedLabel?.key || chips[0]?.list_gpio[0]?.id}
                                         onSelect={handleSelectLabelEdit}
@@ -187,7 +189,7 @@ export const Device = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShow(false)}>
+                    <Button variant="danger" onClick={() => setShow(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => handleClose()}>
@@ -212,6 +214,7 @@ export const Device = () => {
                         </div>
                         <p>ESP</p>
                         <DropdownButton
+                            variant={'secondary'}
                             alignRight
                             title={selectedType?.key || chips[0]?.esp_id}
                             onSelect={handleSelectChip}
@@ -230,6 +233,7 @@ export const Device = () => {
                                 <div style={{marginTop:15}}>
                                     <p >GPIO</p>
                                     <DropdownButton
+                                        variant={'secondary'}
                                         alignRight
                                         title={selectedLabel?.key || chips[0]?.list_gpio[0]?.id}
                                         onSelect={handleSelectLabel}
@@ -248,7 +252,7 @@ export const Device = () => {
                     </Form.Group>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={() => setShowAdd(false)}>
+                    <Button variant="danger" onClick={() => setShowAdd(false)}>
                         Close
                     </Button>
                     <Button variant="primary" onClick={() => handleCloseAdd()}>
